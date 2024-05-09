@@ -32,6 +32,5 @@ int main()
   int arr[] = {3,1,2};
 
   printSubsequence(arr, sizeof(arr)/sizeof(arr[0]));
-  
   return 0;
 }
