@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// * T.C : O(2^n)
 int cntSubSequences(vector<int> arr, int idx, int &sum, int k) {
   if(idx >= arr.size()) {
     if(sum == k)
