@@ -1,7 +1,29 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-void helper(vector<vector<int>> &ans, vector<int> &temp, vector<int> arr, int idx, int sum, int k) {
+// * Function for printing only one Subsequence!
+bool helperPrintOnlyOnce(vector<vector<int>> &ans, vector<int> &temp, vector<int> arr, int idx, int &sum, int k) {
+  if(idx >= arr.size()) {
+    if(sum == k){
+      ans.push_back(temp);
+      return true;
+    }
+    return false;
+  }
+
+  sum += arr[idx];
+  temp.push_back(arr[idx]);
+
+  if(helperPrintOnlyOnce(ans, temp, arr, idx+1, sum, k) == true) 
+    return true;
+  temp.pop_back();
+  sum -= arr[idx];
+  if(helperPrintOnlyOnce(ans, temp, arr, idx+1, sum, k) == true)
+    return true;
+  return false;
+}
+
+void helper(vector<vector<int>> &ans, vector<int> &temp, vector<int> arr, int idx, int &sum, int k) {
   if(idx >= arr.size()) {
     if(sum == k){
       ans.push_back(temp);
@@ -24,10 +46,12 @@ vector<vector<int>> printSubSequence(vector<int> arr, int k) {
   vector<vector<int>> ans;
   int sum = 0;
 
-  helper(ans, temp, arr, 0, sum, k);
+  // helper(ans, temp, arr, 0, sum, k);
+  cout << endl;
+  if(!helperPrintOnlyOnce(ans, temp, arr, 0, sum, k))
+    cout << "No Possible Subsequences!" << endl;
 
   return ans;
-
 }
 
 int main()
