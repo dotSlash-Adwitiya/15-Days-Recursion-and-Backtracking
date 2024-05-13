@@ -37,3 +37,40 @@ vector<vector<int>> CombinationSum2(vector<int> A,int n, int k)
 
     return combinations;
 }
+
+// * T.C : O(2^N * K) 
+// * S.C : O(K * x) {x = valid combinations}
+
+// * Recursive utilization
+// * New Pattern : Picking up all the subsequences rather than elements.
+// * Loop inside the recursive function.
+void helper(vector<vector<int>> &comb, vector<int>& arr, vector<int>& ds, int idx, int k) {
+
+    if(k == 0){
+    comb.push_back(ds);
+    return;
+    }
+
+
+    for(int i = idx; i < arr.size(); i++) {
+    // * First base case, check
+    if(i > idx && arr[i] == arr[i-1])
+        continue;
+    if(arr[i] > k)
+        break;
+    ds.push_back(arr[i]);
+    helper(comb, arr, ds, i+1, k-arr[i]);
+    ds.pop_back();
+    }
+}
+
+
+vector<vector<int>> combinationSum2(vector<int>& A, int k) {
+    vector<int> v;
+    vector<vector<int>> combinations;
+    sort(A.begin(), A.end());
+    
+    helper(combinations, A, v, 0, k);
+
+    return combinations;
+}
