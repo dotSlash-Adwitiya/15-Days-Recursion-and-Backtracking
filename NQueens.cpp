@@ -1,6 +1,44 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+
+//* Optimised approach using hashing :-
+void solveOptimised(vector<vector<string>> &ans, vector<string> &board, vector<int> &upperDiagonal,
+      vector<int> &leftRow, vector<int> &lowerDiagonal, int col, int n){
+
+      if(col == n){
+        ans.push_back(board);
+        return;
+      }        
+
+      for(int row = 0; row < n; row++) {
+          if(!upperDiagonal[row+col] && !leftRow[row] && !lowerDiagonal[n-1 + col-row]){
+            board[row][col] = 'Q';
+            upperDiagonal[row + col] = 1;
+            leftRow[row] = 1;
+            lowerDiagonal[n-1+col-row] = 1;
+            solveOptimised(ans, board, upperDiagonal, leftRow, lowerDiagonal, col + 1, n);
+            board[row][col] = '.';
+            upperDiagonal[row + col] = 0;
+            leftRow[row] = 0;
+            lowerDiagonal[n-1+col-row] = 0;
+          }
+      }    
+}
+vector<vector<string>> OptimisedNQueens(int n) {
+      vector<vector<string>> ans;
+      vector<string> board(n);
+      string s(n , '.');
+      
+      for(int i = 0; i < n; i++)
+      board[i] = s;
+
+      vector<int> upperDiagonal(2*n-1, 0), leftRow(n, 0), lowerDiagonal(2*n-1, 0);
+      solveOptimised(ans, board, upperDiagonal, leftRow, lowerDiagonal, 0, n);
+      return ans;
+}
+
+//*! Below is O(N!) Approach :-
 bool isSafe(vector<string> &board, int row, int col, int n) {
     int trow = row, tcol = col;
 
@@ -78,7 +116,7 @@ vector<vector<string>> findPossiblePlacementsOfQueens(int n) {
 
 int main()
 {
-  vector<vector<string>> NQueens = findPossiblePlacementsOfQueens(8);
+  vector<vector<string>> NQueens = OptimisedNQueens(4);
 
   for(vector<string> &v : NQueens){
     for(string s: v){
