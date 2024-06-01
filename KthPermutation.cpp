@@ -38,17 +38,24 @@ string getPermutation(int n, int k) {
     fact = fact * i;
     numbers.push_back(i);
   }
+
   numbers.push_back(n);
   string ans = "";
   k = k - 1;
   while (true) {
-    ans = ans + to_string(numbers[k / fact]);
+    // * Finding the initial Range, Ex : {This_position,_,_,_}, then
+    // * Finding the initial Range, Ex : {_,This_position,_,_}, then
+    // * Finding the initial Range, Ex : {_,_This_position,_}, then so on......
+    ans = ans + to_string(numbers[k / fact]); 
+  
     numbers.erase(numbers.begin() + k / fact);
+
+    // * If no elements left then break out of here
     if (numbers.size() == 0) {
       break;
     }
 
-    k = k % fact;
+    k = k % fact; // * K's range will be reduced from 16 (for 17) to -> 16%6 = 2 
     fact = fact / numbers.size();
   }
   return ans;
